@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CS101_HW4</title>
+    <link rel="stylesheet" type="text/css" href="main1.css">
+    <style>
+        #my-canvas {
+            border: 1px solid #ff1312;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WELLCOME</h1>
+<canvas height="600" width="800" id="my-canvas"></canvas>
+<script>
+    "use strict"
+    const canvas = document.getElementById('my-canvas');
+    const context = canvas.getContext('2d');
+    const NumberOfPoints = 15;
+    const points = [];
+    for(let i = 0; i < NumberOfPoints; i++) {
+        const size = Math.random() * 100;
+        points.push({
+            height: size,
+            width: size,
+            x: Math.random()*(canvas.height-2*size),
+            y: Math.random()*(canvas.width-2*size),
+            xDir: 1,
+            yDir: 1,
+            color: `rgb(${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)})`
+        })
+    }
+    const draw = function() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        points.forEach(function(thisPoint) {
+            context.fillStyle = thisPoint.color;
+            context.fillRect(thisPoint.x, thisPoint.y, thisPoint.width, thisPoint.height);
+            thisPoint.x += thisPoint.xDir;
+            thisPoint.y += thisPoint.yDir;
+            const thresholdX = thisPoint.x + thisPoint.width;
+            const thresholdY = thisPoint.y + thisPoint.height;
+            if(thresholdX >= canvas.width || thisPoint.x <= 0) {
+                thisPoint.xDir *= -1;
+            }
+            if(thresholdY >= canvas.height || thisPoint.y <= 0) {
+                thisPoint.yDir *= -1;
+            }
+        });
+    };
+    const animate = function() {
+        draw()
+        setTimeout(animate, 11);
+    }
+    animate();
+</script>
+</body>
+</html>
